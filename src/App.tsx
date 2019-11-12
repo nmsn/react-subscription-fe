@@ -2,18 +2,19 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
+import Form from './Form';
+
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
 } from "react-router-dom";
 
 interface Item {
   title: number,
 }
 
-const Index: React.FC<Item> = ({ title }: Item) => {
+const Index = ({ title }: Item) => {
   return (
     <div className="App">
       <header className="App-header">
@@ -34,12 +35,13 @@ const Index: React.FC<Item> = ({ title }: Item) => {
   );
 };
 
-const App: React.FC = () => {
+const App = () => {
   return (
     <Router>
       <Switch>
         <Route exact path="/1">
           <Index title={1} />
+          <Form />
         </Route>
         <Route path="/2">
           <Index title={2} />

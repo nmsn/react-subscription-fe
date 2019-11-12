@@ -1,0 +1,9 @@
+.list {
+  width: 100px;
+  height: 100px;
+  background: #fff;
+  
+  :global(.span) {
+    color: red;
+  }
+}
