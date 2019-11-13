@@ -1,5 +1,3 @@
-import React from 'react';
-import { Spin } from 'antd';
 import Loadable from 'react-loadable';
 
 export const router = {
@@ -7,7 +5,7 @@ export const router = {
     component: Loadable({
       loader: () => import('./views/SubscribeForm/index'),
       loading: () => {
-        return <Spin size="large" className="global-spin" />;
+        return null;
       },
     })
   },
@@ -15,7 +13,7 @@ export const router = {
     component: Loadable({
       loader: () => import('./views/Home/index'),
       loading: () => {
-        return <Spin size="large" className="global-spin" />;
+        return null;
       },
     })
   },

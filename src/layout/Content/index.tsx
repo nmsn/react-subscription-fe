@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import styles from './index.module.scss'
 
 import {
@@ -8,9 +8,15 @@ import {
 } from "react-router-dom";
 
 import { router } from 'router';
+import { LoadableComponent } from 'react-loadable';
+
+type RouteItem = {
+  path: string,
+  component: any,
+}
 
 export default () => {
-  const routerArr = Object.entries(router).map(([key, item]) => ({ path: key, component: item.component }));
+  const routerArr: RouteItem[] = Object.entries(router).map(([key, item]) => ({ path: key, component: item.component }));
 
   return (
     <div className={styles.content}>
