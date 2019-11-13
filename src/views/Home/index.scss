@@ -8,6 +8,7 @@
 
 .App-header {
   background-color: #282c34;
+  width: 100vw;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -20,3 +21,15 @@
 .App-link {
   color: #09d3ac;
 }
+
+:global {
+  .ant-spin-container {
+    overflow: visible !important;
+  }
+
+  .global-spin {
+    width: 100%;
+    margin: 40px 0 !important;
+  }
+}
+
