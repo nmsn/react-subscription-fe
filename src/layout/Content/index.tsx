@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 import styles from './index.module.scss'
 
 import {
@@ -8,7 +8,6 @@ import {
 } from "react-router-dom";
 
 import { router } from 'router';
-import { LoadableComponent } from 'react-loadable';
 
 type RouteItem = {
   path: string,
