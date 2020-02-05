@@ -1,87 +1,80 @@
-import React from 'react';
-import axois from 'axios';
-import { Checkbox, Row, Col } from 'antd';
-import { CheckboxValueType } from 'antd/lib/checkbox/Group';
+import React from "react";
+// import axois from "axios";
+import { Checkbox, Row, /* Col,  */Card, Button } from "antd";
+import { CheckboxValueType } from "antd/lib/checkbox/Group";
 
-import styles from './index.module.scss';
+
+import { juejin } from "./config";
 
 type State = {
-  list: rsshubItem[],
-}
+  checkValue: object;
+};
 
 type Props = {
-  count?: number,
-}
+  // count?: number;
+};
 
-type rsshubItem = {
-  title: string,
-  link: string,
-}
 
 export default class Form extends React.Component<Props, State> {
   state: State = {
-    list: [],
-  }
-  
+    checkValue: {},
+  };
 
-  componentDidMount() {
-    axois.get('/rsshub').then(res => {
-      const { data } = res;
-      this.setState({ list: data })
+  // componentDidMount() {
+  //   axois.get("/rsshub").then(res => {
+  //     const { data } = res;
+  //     this.setState({ list: data });
+  //   });
+  // }
+
+  onChange(checkedValue: CheckboxValueType[], key: string) {
+    console.log("checked = ", checkedValue, key);
+    this.setState({
+      checkValue: {
+        ...this.state.checkValue,
+        [key]: checkedValue,
+      },
     });
   }
-  
-  onChange(checkedValue: CheckboxValueType[]) {
-    console.log('checked = ', checkedValue);
-  }
-  
-  render() {
-    
-    const checkboxContent = [
-      {
-        title: '标题1',
-        content: [
-          {
-            title: 'A',
-            value: 'A',
-          },
-        ],
-      },
-      {
-        title: '标题2',
-        content: [
-          {
-            title: 'B',
-            value: 'B',
-          },
-        ],
-      },
-      {
-        title: '标题3',
-        content: [
-          {
-            title: 'C',
-            value: 'C',
-          },
-        ],
-      },
-    ];
 
+
+  render() {
     return (
-      <Checkbox.Group className={styles.form} style={{ width: '100%' }} onChange={this.onChange}>
-        <Row>
-          {checkboxContent.map(({ title, content }) => (
-            <Col span={8} style={{ minWidth: 100 }}>
-              <div>{title}</div>
-              {content.map(({ title, value }) => (
-                <Row>
-                  <Checkbox value={value}>{title}</Checkbox>
-                </Row>
-              ))}
-            </Col>
-          ))}
-        </Row>
-      </Checkbox.Group>
-    )
+      <>
+        <Card title="掘金" style={{ margin: 20 }}>
+            {juejin.map(({ key: key1, name, children, type }) => (
+              <Row key={key1} style={{ margin: "8px 0" }}>
+                <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>
+                  {name}
+                </div>
+                <Checkbox.Group onChange={(e) => this.onChange(e, key1)}>
+                  {children.map(({ key: key2, name }) => (
+                    <Checkbox key={key2} value={key2}>
+                      {name}
+                    </Checkbox>
+                  ))}
+                </Checkbox.Group>
+                <div>
+                  {type && (
+                    <>
+                      <div style={{ fontWeight: 700, margin: "2px 0" }}>
+                        类型
+                      </div>
+                        <Checkbox.Group onChange={(e) => this.onChange(e, 'type')}>
+                        {type.map(({ key: key3, name }) => (
+                          <Checkbox key={key3} value={key3}>
+                            {name}
+                          </Checkbox>
+                        ))}
+                      </Checkbox.Group>
+                    </>
+                  )}
+                </div>
+              </Row>
+            ))}
+          <Button block type="primary">提交</Button>
+        </Card>
+      </>
+    );
   }
 }
