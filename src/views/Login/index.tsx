@@ -1,9 +1,10 @@
 import React from 'react';
-// import axois from 'axios';
-import { Input, Icon, Card, Button } from 'antd';
+import axois from 'axios';
+import { Input, Icon, Card, Button, message } from 'antd';
 import { /* Link, */ withRouter, RouteComponentProps } from 'react-router-dom';
 
 import styles from './index.module.scss';
+import Axios from 'axios';
 
 type State = {
   username: string,
@@ -35,8 +36,16 @@ class Login extends React.Component<Props & RouteComponentProps, State> {
   }
   
   handleSubmit = () => {
-    
-    this.props.history.push('/content');
+    const { username, password } = this.state;
+    axois.post('/auth/login', { username, password }).then(res => {
+      const { code, message: message2 } = res.data;
+      if (code === 0) {
+        message.success(message2);
+        this.props.history.push('/content');
+      } else {
+        message.error(message2);
+      }
+    });
   }
   
   handleInputUsername = (e: { target: { value: any; }; }) => {
