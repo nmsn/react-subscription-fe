@@ -6,11 +6,9 @@ axios.interceptors.request.use((config) => {
   
   // TODO 获取 token
   const token = localStorage.getItem('token');
-  console.log(token);
   
   if (token && token !== 'undefined') {
-    config.headers.Authorization = 'bearer ' +token;
-    // Authorization
+    config.headers.authorization = token;
   }
   // } else {
   //   window.location.href = '/login';
@@ -22,11 +20,10 @@ axios.interceptors.request.use((config) => {
 
 axios.interceptors.response.use(
   (response) => {
-    console.log(response);
-    const token = response.headers.Authorization;
+    const token = response.headers.authorization;
     const preToken = localStorage.getItem('token');
     
-    if (token !== preToken) {
+    if (token && token !== preToken) {
       localStorage.setItem('token', token);
     }
 

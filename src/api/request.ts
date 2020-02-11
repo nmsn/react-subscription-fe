@@ -24,7 +24,6 @@ function apiAxios(method: Method, url: string, params: object) {
     })
       .then(
         (res: any) => {
-          console.log(res);
           if (res.status >= 200 && res.status < 299) { 
             resolve(res);
           } else {
