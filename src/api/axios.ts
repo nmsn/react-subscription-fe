@@ -20,11 +20,10 @@ axios.interceptors.request.use((config) => {
 
 axios.interceptors.response.use(
   (response) => {
-
     const token = response.headers.authorization;
     const preToken = localStorage.getItem('token');
     
-    if (token !== preToken) {
+    if (token && token !== preToken) {
       localStorage.setItem('token', token);
     }
 
