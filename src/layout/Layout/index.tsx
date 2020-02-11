@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { /* Link, */ withRouter, RouteComponentProps } from 'react-router-dom';
-// import cssModules from 'react-css-modules';
+import axios from 'axios';
 import { Layout, Icon, Menu, Dropdown, Avatar } from 'antd';
 import SiderMenu from '../SideMenu';
-// import loginUtil from 'util/login';
+
 import styles from './index.module.scss';
 
 interface props {
@@ -28,6 +28,10 @@ class App extends Component<props & RouteComponentProps, states> {
   state = {
     collapsed: false
   };
+  
+  componentDidMount() {
+    axios.get('user/current');
+  }
 
   toggle = () => {
     this.setState({
