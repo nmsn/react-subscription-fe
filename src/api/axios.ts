@@ -5,13 +5,16 @@ import { message } from 'antd';
 axios.interceptors.request.use((config) => {
   
   // TODO 获取 token
-  const token = localStorage.get('token');
+  const token = localStorage.getItem('token');
+  console.log(token);
   
-  if (token) {
-    config.headers.token = token;
-  } else {
-    window.location.href = '/auth/login';
+  if (token && token !== 'undefined') {
+    config.headers.Authorization = 'bearer ' +token;
+    // Authorization
   }
+  // } else {
+  //   window.location.href = '/login';
+  // }
   
 
   return config;
@@ -19,6 +22,13 @@ axios.interceptors.request.use((config) => {
 
 axios.interceptors.response.use(
   (response) => {
+    console.log(response);
+    const token = response.headers.Authorization;
+    const preToken = localStorage.getItem('token');
+    
+    if (token !== preToken) {
+      localStorage.setItem('token', token);
+    }
 
     const data = response.data
 
@@ -26,7 +36,7 @@ axios.interceptors.response.use(
       message.error(data.message);
     }
     
-    return Promise.resolve(data)
+    return Promise.resolve(response)
 
     
   },
