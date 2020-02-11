@@ -1,10 +1,10 @@
 import React from 'react';
-import axois from 'axios';
+import axios from 'axios';
+import request from '../../api/request';
 import { Input, Icon, Card, Button, message } from 'antd';
 import { /* Link, */ withRouter, RouteComponentProps } from 'react-router-dom';
 
 import styles from './index.module.scss';
-import Axios from 'axios';
 
 type State = {
   username: string,
@@ -20,28 +20,40 @@ type rsshubItem = {
   link: string,
 }
 
+type response = {
+  code: number,
+  message: string,
+}
+
 class Login extends React.Component<Props & RouteComponentProps, State> {
   state: State = {
     username: '',
     password: '',
   }
-  
 
   componentDidMount() {
     // axois.get('/rsshub').then(res => {
     //   const { data } = res;
     //   this.setState({ list: data })
     // });
-    console.log()
+  }
+  
+  login = (params: object): Promise<any> => {
+    return request.post('/user/login', params);
   }
   
   handleSubmit = () => {
     const { username, password } = this.state;
-    axois.post('/auth/login', { username, password }).then(res => {
+    this.login({ username, password }).then(res => {
       const { code, message: message2 } = res.data;
+      
       if (code === 0) {
+        // 保存token
+        console.log(res.headers);
+        const { authorization } = res.headers;
+        localStorage.setItem('token', authorization);
         message.success(message2);
-        this.props.history.push('/content');
+        this.props.history.push('/sub');
       } else {
         message.error(message2);
       }
