@@ -28,7 +28,6 @@ export default class Form extends React.Component<Props, State> {
   // }
 
   onChange(checkedValue: CheckboxValueType[], key: string) {
-    console.log("checked = ", checkedValue, key);
     this.setState({
       checkValue: {
         ...this.state.checkValue,

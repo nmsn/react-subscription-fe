@@ -2,13 +2,17 @@ import React, { Component } from 'react';
 import { /* Link, */ withRouter, RouteComponentProps } from 'react-router-dom';
 import axios from 'axios';
 import { Layout, Icon, Menu, Dropdown, Avatar } from 'antd';
-import SiderMenu from '../SideMenu';
+import { observer, inject } from "mobx-react"
 
+import SiderMenu from '../SideMenu';
 import styles from './index.module.scss';
+
+import { getCurrent } from '../../api/user';
 
 interface props {
   // your props here
   collapsed?: any;
+  [propName: string]: any;
 }
 interface states {
   // attributes needed in your component here
@@ -24,13 +28,20 @@ interface e {
 // @cssModules(styles, {
 //   allowMultiple: true
 // })
+
+@inject('userStore')
+@observer
 class App extends Component<props & RouteComponentProps, states> {
   state = {
     collapsed: false
   };
   
   componentDidMount() {
-    axios.get('user/current');
+    getCurrent({}).then(res => {
+      const { data: { data: { user: { username } } }} = res;
+      const { userStore } = this.props;
+      userStore.saveUser({ username });
+    });
   }
 
   toggle = () => {
@@ -52,6 +63,7 @@ class App extends Component<props & RouteComponentProps, states> {
 
   render() {
     const { collapsed } = this.state;
+    const { userStore } = this.props;
 
     // const userInfo = loginUtil.getUserInfo() || {};
 
@@ -107,7 +119,7 @@ class App extends Component<props & RouteComponentProps, states> {
                     src="https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png"
                     alt="avatar"
                   />
-                  <span className={styles.avatar}>{/* userInfo.name */}</span>
+                  <span className={styles.avatar}>{this.props.userStore.userInfo.username}</span>
                 </span>
               </Dropdown>
             </div>
