@@ -1,10 +1,11 @@
 import React from 'react';
-import axios from 'axios';
 import request from '../../api/request';
 import { Input, Icon, Card, Button, message } from 'antd';
 import { /* Link, */ withRouter, RouteComponentProps } from 'react-router-dom';
 
 import styles from './index.module.scss';
+
+import { login } from '../../api/user'; 
 
 type State = {
   username: string,
@@ -13,16 +14,6 @@ type State = {
 
 type Props = {
   count?: number,
-}
-
-type rsshubItem = {
-  title: string,
-  link: string,
-}
-
-type response = {
-  code: number,
-  message: string,
 }
 
 class Login extends React.Component<Props & RouteComponentProps, State> {
@@ -38,18 +29,13 @@ class Login extends React.Component<Props & RouteComponentProps, State> {
     // });
   }
   
-  login = (params: object): Promise<any> => {
-    return request.post('/user/login', params);
-  }
-  
   handleSubmit = () => {
     const { username, password } = this.state;
-    this.login({ username, password }).then(res => {
+    login({ username, password }).then(res => {
       const { code, message: message2 } = res.data;
       
       if (code === 0) {
         // 保存token
-        console.log(res.headers);
         const { authorization } = res.headers;
         localStorage.setItem('token', authorization);
         message.success(message2);
