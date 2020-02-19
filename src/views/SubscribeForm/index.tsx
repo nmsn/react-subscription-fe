@@ -1,13 +1,20 @@
 import React from "react";
 // import axois from "axios";
-import { Checkbox, Row, /* Col,  */Card, Button } from "antd";
+import { Checkbox, /*Row,  Col,  */Card, Button } from "antd";
 import { CheckboxValueType } from "antd/lib/checkbox/Group";
 
 
 import { juejin } from "./config";
 
-type State = {
-  checkValue: object;
+import { get, update } from '../../api/subscribe';
+
+interface State {
+  checkValue: {
+    category?: [];
+    trending?: [];
+    trendingType?: [];
+    pins?: [];
+  };
 };
 
 type Props = {
@@ -20,14 +27,18 @@ export default class Form extends React.Component<Props, State> {
     checkValue: {},
   };
 
-  // componentDidMount() {
-  //   axois.get("/rsshub").then(res => {
-  //     const { data } = res;
-  //     this.setState({ list: data });
-  //   });
-  // }
+  componentDidMount() {
+    get().then(res => {
+      this.setState({ checkValue: res.data.data.juejin });
+    });
+  }
+  
+  submit = () => {
+    const { checkValue } = this.state;
+    update(checkValue);
+  }
 
-  onChange(checkedValue: CheckboxValueType[], key: string) {
+  onChange = (checkedValue: CheckboxValueType[], key: string) => {
     this.setState({
       checkValue: {
         ...this.state.checkValue,
@@ -38,40 +49,56 @@ export default class Form extends React.Component<Props, State> {
 
 
   render() {
+    
+    const { category: categoryTemp, trending: trendingTemp, trendingType: trendingTypeTemp,pins: pinsTemp } = juejin;
+    
+    const { category, trending, trendingType, pins } = this.state.checkValue;
+    
+    const extra = (
+      <Checkbox.Group value={trendingType} onChange={(e) => this.onChange(e, `${trendingTypeTemp.key}Type`)}>
+        {trendingTypeTemp.children.map(({ key, name }) => (
+          <Checkbox key={key} value={key}>
+            {name}
+          </Checkbox>
+        ))}
+      </Checkbox.Group>
+    );
+
     return (
       <>
         <Card title="掘金" style={{ margin: 20 }}>
-            {juejin.map(({ key: key1, name, children, type }) => (
-              <Row key={key1} style={{ margin: "8px 0" }}>
-                <div style={{ fontSize: 16, fontWeight: 700, marginBottom: 4 }}>
+          <Card title={categoryTemp.name} style={{ marginBottom: 16 }}>
+            <Checkbox.Group value={category} onChange={(e) => this.onChange(e, categoryTemp.key)}>
+              {categoryTemp.children.map(({ key, name }) => (
+                <Checkbox key={key} value={key}>
                   {name}
-                </div>
-                <Checkbox.Group onChange={(e) => this.onChange(e, key1)}>
-                  {children.map(({ key: key2, name }) => (
-                    <Checkbox key={key2} value={key2}>
-                      {name}
-                    </Checkbox>
-                  ))}
-                </Checkbox.Group>
-                <div>
-                  {type && (
-                    <>
-                      <div style={{ fontWeight: 700, margin: "2px 0" }}>
-                        类型
-                      </div>
-                        <Checkbox.Group onChange={(e) => this.onChange(e, 'type')}>
-                        {type.map(({ key: key3, name }) => (
-                          <Checkbox key={key3} value={key3}>
-                            {name}
-                          </Checkbox>
-                        ))}
-                      </Checkbox.Group>
-                    </>
-                  )}
-                </div>
-              </Row>
-            ))}
-          <Button block type="primary">提交</Button>
+                </Checkbox>
+              ))}
+            </Checkbox.Group>
+          </Card>
+          
+          <Card title={trendingTemp.name} style={{ marginBottom: 16 }} extra={extra}>
+            <Checkbox.Group value={trending} onChange={(e) => this.onChange(e,  trendingTemp.key)}>
+              {trendingTemp.children.map(({ key, name }) => (
+                <Checkbox key={key} value={key}>
+                  {name}
+                </Checkbox>
+              ))}
+            </Checkbox.Group>
+          </Card>
+          
+          <Card title={pinsTemp.name} style={{ marginBottom: 16 }}>
+            <Checkbox.Group value={pins} onChange={(e) => this.onChange(e,  pinsTemp.key)}>
+              {pinsTemp.children.map(({ key, name }) => (
+                <Checkbox key={key} value={key}>
+                  {name}
+                </Checkbox>
+              ))}
+            </Checkbox.Group>
+          </Card>
+          
+          
+          <Button block type="primary" onClick={this.submit}>提交</Button>
         </Card>
       </>
     );

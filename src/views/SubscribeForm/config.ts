@@ -1,8 +1,8 @@
-export const juejin = [
+export const juejin = {
   // /juejin/category/:category 分类
-  { 
-    key: 'category',
-    name: '分类',
+  category: {
+    key: "category",
+    name: "分类",
     children: [
       {
         key: "backend",
@@ -38,11 +38,11 @@ export const juejin = [
       },
     ],
   },
-  
+
   // /juejin/trending/:category/:type 热门
-  { 
-    key: 'trending',
-    name: '热门',
+  trending: {
+    key: "trending",
+    name: "热门",
     children: [
       {
         key: "backend",
@@ -85,25 +85,29 @@ export const juejin = [
         name: "运维",
       },
     ],
-    type: [
+  },
+  trendingType: {
+    key: "trendingType",
+    name: "热门频率",
+    children: [
       {
-        key: 'weekly',
-        name: '本周最热',
+        key: "weekly",
+        name: "本周最热",
       },
       {
-        key: 'monthy',
-        name: '本月最热',
+        key: "monthy",
+        name: "本月最热",
       },
       {
-        key: 'historical',
-        name: '历史最热',
+        key: "historical",
+        name: "历史最热",
       },
     ],
   },
   // /juejin/pins 沸点
-  {
-    key: 'pins',
-    name: '沸点',
+  pins: {
+    key: "pins",
+    name: "沸点",
     children: [
       {
         key: "pins",
@@ -111,4 +115,4 @@ export const juejin = [
       },
     ],
   },
-];
+};
