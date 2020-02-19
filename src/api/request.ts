@@ -1,14 +1,20 @@
 import axios from "./axios";
 
 export type Method =
-  | 'get' | 'GET'
-  | 'delete' | 'DELETE'
-  | 'head' | 'HEAD'
-  | 'options' | 'OPTIONS'
-  | 'post' | 'POST'
-  | 'put' | 'PUT'
-  | 'patch' | 'PATCH'
-
+  | "get"
+  | "GET"
+  | "delete"
+  | "DELETE"
+  | "head"
+  | "HEAD"
+  | "options"
+  | "OPTIONS"
+  | "post"
+  | "POST"
+  | "put"
+  | "PUT"
+  | "patch"
+  | "PATCH";
 
 function apiAxios(method: Method, url: string, params: object) {
   return new Promise((resolve, reject) => {
@@ -21,25 +27,17 @@ function apiAxios(method: Method, url: string, params: object) {
           ? params
           : null,
       withCredentials: false,
-    })
-      .then(
-        (res: any) => {
-          if (res.status >= 200 && res.status < 299) { 
-            resolve(res);
-          } else {
-            reject("axios返回状态不对，查看请求处理过程．．．．");
-          }
-        },
-        (err: any) => {
-          reject(err);
-        },
-      )
-      .catch((err: any) => {
-        const errInfo = { err: err.response };
-        reject(errInfo);
-      });
+    }).then(
+      (res: any) => {
+        resolve(res);
+      },
+      (err: any) => {
+        reject(err);
+      },
+    );
   });
 }
+
 export default {
   get: (url: string, params: object) => {
     return apiAxios("GET", url, params);
