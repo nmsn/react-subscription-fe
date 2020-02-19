@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { /* Link, */ withRouter, RouteComponentProps } from 'react-router-dom';
-import axios from 'axios';
 import { Layout, Icon, Menu, Dropdown, Avatar } from 'antd';
 import { observer, inject } from "mobx-react"
 
@@ -54,19 +53,12 @@ class App extends Component<props & RouteComponentProps, states> {
 
   handleMenuClick = (e: e) => {
     if (e.key === 'logout') {
-      // loginUtil.logout();
-      // this.props.history.push('/login');
-      // console.log(e.key);
       this.props.history.push('/login');
     }
   }
 
   render() {
     const { collapsed } = this.state;
-    const { userStore } = this.props;
-
-    // const userInfo = loginUtil.getUserInfo() || {};
-
     const menu = (
       <Menu className="user-menu" selectedKeys={[]} onClick={this.handleMenuClick}>
         <Menu.Item key="logout">

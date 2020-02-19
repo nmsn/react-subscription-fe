@@ -1,5 +1,4 @@
 import React from 'react';
-import request from '../../api/request';
 import { Input, Icon, Card, Button, message } from 'antd';
 import { /* Link, */ withRouter, RouteComponentProps } from 'react-router-dom';
 
@@ -32,9 +31,9 @@ class Login extends React.Component<Props & RouteComponentProps, State> {
   handleSubmit = () => {
     const { username, password } = this.state;
     login({ username, password }).then(res => {
-      const { code, message: message2 } = res.data;
+      const { message: message2 } = res.data;
       
-      if (code === 0) {
+      if (message2 === '登录成功') {
         // 保存token
         const { authorization } = res.headers;
         localStorage.setItem('token', authorization);
