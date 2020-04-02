@@ -6,7 +6,7 @@ axios.interceptors.request.use((config) => {
 
   if (token && token !== 'undefined') {
     config.headers.authorization = token;
-  } else {
+  } else if (config.url !== '/url/login') {
     window.location.href = '/login';
   }
 
